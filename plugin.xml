@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="mysql"
+            id="lad.eclipse.mysqlView">
+      </category>
+      <view
+            name="mysql View"
+            icon="icons/icon.gif"
+            category="lad.eclipse.mysqlView"
+            class="lad.eclipse.mysqlview.views.MysqlView"
+            id="lad.eclipse.mysqlview.views.mysqlView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.TaskList"
+               relationship="right"
+               id="lad.eclipse.mysqlview.views.mysqlView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="lad.eclipse.mysqlview.preferences.MysqlPreferencePage"
+            id="lad.eclipse.mysqlview.preferences.mysqlPreferencePage"
+            name="mysql">
+      </page>
+      <page
+            category="lad.eclipse.mysqlview.preferences.mysqlPreferencePage"
+            class="lad.eclipse.mysqlview.preferences.TemplatePreferencePage"
+            id="lad.eclipse.mysqlView.Templates"
+            name="Templates">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="lad.eclipse.mysqlview.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Copy Category"
+            id="lad.eclipse.commands.category">
+      </category>
+      <command
+            name="Copy Command"
+            categoryId="lad.eclipse.commands.category"
+            id="lad.eclipse.mysqlview.copycommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="lad.eclipse.handle.CopyHandler"
+            commandId="lad.eclipse.mysqlview.copycommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="lad.eclipse.mysqlview.copycommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="CTRL+V"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+</plugin>
