@@ -1,6 +1,8 @@
 package lad.eclipse.model;
 
-public class Column implements iDBObj {
+import java.io.Serializable;
+
+public class Column implements iDBObj, Serializable {
 	public static int TYPE_INTEGER = 9;
 	public static int TYPE_FLOAT = 1;
 	public static int TYPE_DOUBLE = 2;

@@ -33,10 +33,10 @@ public class CopyHandler extends AbstractHandler {
 		ScriptEngine engine = engineManager.getEngineByName("JavaScript"); // 得到脚本引擎
 		try {
 			IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-			String cpjs = store.getString("COPY_JS");
+			String cpjs = store.getString("RUN_JS");
 			engine.eval(new java.io.FileReader(cpjs));
 			Invocable inv = (Invocable) engine;
-			Object a = inv.invokeFunction("getContent", new Object[] { 
+			Object a = inv.invokeFunction("copy", new Object[] { 
 					EditorUtils.getUrl(), 
 					EditorUtils.getSysClipboardText(),
 					EditorUtils.getSelectionText(),

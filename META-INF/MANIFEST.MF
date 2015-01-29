@@ -1,9 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Mysqlview
-Bundle-SymbolicName: lad.eclipse.mysqlview;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Name: Quickview
+Bundle-SymbolicName: quickview2;singleton:=true
+Bundle-Version: 2.0.1.qualifier
+Bundle-ClassPath: .,
+ lib/sqlitejdbc-v033-nested.jar,
+ lib/org.json-20120521.jar,
+ lib/mysql-connector-java-5.1.21-bin.jar
 Bundle-Activator: lad.eclipse.mysqlview.Activator
+Export-Package: lad.eclipse.action,
+ lad.eclipse.handle,
+ lad.eclipse.model,
+ lad.eclipse.mysqlview,
+ lad.eclipse.mysqlview.preferences,
+ lad.eclipse.mysqlview.templates,
+ lad.eclipse.mysqlview.views
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text;bundle-version="3.9.0",
@@ -12,7 +23,3 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-AutoStart: true
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .,
- lib/sqlitejdbc-v033-nested.jar,
- lib/org.json-20120521.jar,
- lib/mysql-connector-java-5.1.21-bin.jar

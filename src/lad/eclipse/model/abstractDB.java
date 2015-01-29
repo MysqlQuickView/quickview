@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public abstract class abstractDB {
-	protected Connection conn = null;
+	public Connection conn = null;
 	protected Statement stmt;
 
 	public abstractDB(DBConfig config) throws Exception {

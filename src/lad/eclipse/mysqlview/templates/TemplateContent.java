@@ -55,7 +55,8 @@ public class TemplateContent {
 			String js = store.getString("RUN_JS");
 			engine.eval(new java.io.FileReader(js));
 			Invocable inv = (Invocable) engine;
-			Object a = inv.invokeFunction(functionName, new Object[] { 
+			Object a = inv.invokeFunction("create", new Object[] { 
+					functionName,
 					selectKeys,
 					tablename,
 					EditorUtils.getUrl(),

@@ -1,6 +1,8 @@
 package lad.eclipse.mysqlview.templates;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,7 +31,7 @@ public class DocumentDll {
 			sqlite = new Sqlite(config);
 			sqlite.executeUpdate("CREATE TABLE maps("
 	        		+ "\"key\" text NOT NULL,"
-	        		+ "\"value\" text NOT NULL,"
+	        		+ "\"value\" BLOB NOT NULL,"
 	        		+ "PRIMARY KEY(\"key\"));");
 			sqlite.executeUpdate("CREATE TABLE template("
 	        		+ "\"id\" integer NOT NULL PRIMARY KEY AUTOINCREMENT,"
@@ -38,6 +40,55 @@ public class DocumentDll {
 	        		+ "\"description\" text NOT NULL,"
 	        		+ "\"content\" text NOT NULL);");
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static String getKey(String name){
+		try {
+			ResultSet rs = getSqlite().executeQuery("select value from maps where key = '" + name + "'");
+			if(rs.next()){
+				return rs.getString(1);
+			}else{
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public static Object getKeyObj(String name){
+		try {
+			ResultSet rs = getSqlite().executeQuery("select value from maps where key = '" + name + "'");
+			if(rs.next()){
+				byte[] buf = rs.getBytes(1);
+				return SerializeUtil.deserializeObject(buf);
+			}else{
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static void setKey(String name,byte[] value){
+		try {
+			ResultSet rs = getSqlite().executeQuery("select 1 from maps where key = '" + name + "'");
+			Connection conn = getSqlite().conn;
+			
+			if(rs.next()){
+				PreparedStatement ps = conn.prepareStatement("update maps set value=? where key=?");
+				ps.setBytes(1, value);
+				ps.setString(2, name);
+				ps.executeUpdate();
+			}else{
+				PreparedStatement ps = conn.prepareStatement("insert into maps values(?,?)");
+				ps.setString(1, name);
+				ps.setBytes(2, value);
+				ps.executeUpdate();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -20,9 +20,6 @@ public class MysqlPreferencePage extends FieldEditorPreferencePage implements
 		addField(new TextFieldEditor("DB_CONFIG", "&db_config:",
 				getFieldEditorParent()));
 		
-		addField(new FileFieldEditor("COPY_JS", "&copy_js:",
-				getFieldEditorParent()));
-		
 		addField(new FileFieldEditor("RUN_JS", "&run_js:",
 				getFieldEditorParent()));
 	}

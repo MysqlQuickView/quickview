@@ -1,6 +1,8 @@
 package lad.eclipse.model;
 
-public class Table implements iDBObj {
+import java.io.Serializable;
+
+public class Table implements iDBObj , Serializable{
 	private String name;
 	private String comment;
 	private Column[] children;

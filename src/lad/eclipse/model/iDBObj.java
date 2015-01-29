@@ -1,6 +1,8 @@
 package lad.eclipse.model;
 
-public abstract interface iDBObj {
+import java.io.Serializable;
+
+public abstract interface iDBObj{
 	public abstract String getName();
 
 	public abstract iDBObj[] getChildren();

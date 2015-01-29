@@ -8,11 +8,15 @@ import lad.eclipse.model.DataBase;
 import lad.eclipse.model.MysqlInfomation;
 import lad.eclipse.model.iDBObj;
 import lad.eclipse.mysqlview.Activator;
+import lad.eclipse.mysqlview.templates.DocumentDll;
+import lad.eclipse.mysqlview.templates.MD5Util;
+import lad.eclipse.mysqlview.templates.SerializeUtil;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
+import org.json.JSONObject;
 
 public class MysqlContentProvider implements IStructuredContentProvider,
 		ITreeContentProvider {
@@ -35,8 +39,16 @@ public class MysqlContentProvider implements IStructuredContentProvider,
 				continue;
 			}
 			try {
-				DBConfig dbc = new DBConfig(config,null);
-				ld.add(new MysqlInfomation(dbc).getDb());
+				Object dbt = DocumentDll.getKeyObj(MD5Util.MD5(config));
+				System.out.println(dbt);
+				if(dbt == null){
+					DBConfig dbc = new DBConfig(config,null);
+					DataBase db = new MysqlInfomation(dbc).getDb();
+					ld.add(db);
+					DocumentDll.setKey(MD5Util.MD5(config), SerializeUtil.serializeObject(db));
+				}else{
+					ld.add((DataBase) dbt);
+				}
 			} catch (Exception e) {
 			}
 		}

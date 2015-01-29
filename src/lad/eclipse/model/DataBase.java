@@ -1,6 +1,9 @@
 package lad.eclipse.model;
 
-public class DataBase implements iDBObj {
+import java.io.Serializable;
+
+public class DataBase implements iDBObj, Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private Table[] children;
 	private iDBObj parent;
