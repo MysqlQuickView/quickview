@@ -12,6 +12,7 @@ function demo(keys,table,filename,selection,clipboard,space){
 	return table;
 }
 
+//增加模板
 function addTemplate(keys,table,filename,selection,clipboard,space){
 	var c = [];
 	for(var i in keys){
@@ -29,6 +30,7 @@ function getTemplate(t,value,i){
 			.replace(/ccc/g,value.comment);
 }
 
+//获取java对应的成员方法
 function getJavaParm(keys,table,filename,selection,clipboard,space){
 	var c=[];
 	var isFirst = true;
@@ -43,6 +45,7 @@ function getJavaParm(keys,table,filename,selection,clipboard,space){
 	return c.join('');
 }
 
+//获取java 对应的类型
 function getJavaType(type){
 	type = type.toLowerCase();
 	if(type.indexOf('datetime') >= 0){
@@ -58,8 +61,6 @@ function getJavaType(type){
 
 function addInput(keys,table,filename,selection,clipboard,space){
 	var c = ['$input	= Input::getInstance()->request();\n'];
-	
-	
 	for(var i in keys){
 		c.push(space+'$'+keys[i].oname+' = Argchecker::valid("');
 		c.push(keys[i].type.indexOf('int')>=0?'int':'string');
