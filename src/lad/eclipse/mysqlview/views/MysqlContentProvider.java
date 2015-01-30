@@ -1,7 +1,10 @@
 package lad.eclipse.mysqlview.views;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lad.eclipse.model.DBConfig;
 import lad.eclipse.model.DataBase;
@@ -16,10 +19,18 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.json.JSONObject;
 
 public class MysqlContentProvider implements IStructuredContentProvider,
 		ITreeContentProvider {
+	
+	public static List<DataBase> ld = new ArrayList<DataBase>();
+	public static Map<String,DBConfig> configT = new HashMap<String,DBConfig>();
+	private DataBase initDb;
+	
+	public MysqlContentProvider(DataBase initDb){
+		this.initDb = initDb;
+	}
+	
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 	}
 
@@ -27,33 +38,52 @@ public class MysqlContentProvider implements IStructuredContentProvider,
 	}
 
 	public Object[] getElements(Object parent) {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		String dbConfig = store.getString("DB_CONFIG");
-		String[] configs = dbConfig.split("\n");
 		
-		List<DataBase> ld = new ArrayList<DataBase>();
-		
-		for(String config:configs){
-			config=config.trim();
-			if(config.equals("") || config.indexOf("#")==0){
-				continue;
-			}
-			try {
-				Object dbt = DocumentDll.getKeyObj(MD5Util.MD5(config));
-				System.out.println(dbt);
-				if(dbt == null){
-					DBConfig dbc = new DBConfig(config,null);
-					DataBase db = new MysqlInfomation(dbc).getDb();
-					ld.add(db);
-					DocumentDll.setKey(MD5Util.MD5(config), SerializeUtil.serializeObject(db));
-				}else{
-					ld.add((DataBase) dbt);
+		if(initDb == null){
+			IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+			String dbConfig = store.getString("DB_CONFIG");
+			String[] configs = dbConfig.split("\n");
+			ld = new ArrayList<DataBase>();
+			
+			for(String config:configs){
+				config=config.trim();
+				if(config.equals("") || config.indexOf("#")==0){
+					continue;
 				}
-			} catch (Exception e) {
+				try {
+					Object dbt = DocumentDll.getKeyObj(MD5Util.MD5(config));
+					DBConfig dbc = new DBConfig(config);
+					configT.put(dbc.getDbName(), dbc);
+					
+					if(dbt == null){
+						DataBase db = new MysqlInfomation(dbc).getDb();
+						ld.add(db);
+						DocumentDll.setKey(MD5Util.MD5(config), SerializeUtil.serializeObject(db));
+					}else{
+						ld.add((DataBase) dbt);
+					}
+				} catch (Exception e) {
+				}
 			}
+			
+			return ld.toArray(new Object[ld.size()]);
+		}else{
+			int i = 0;
+			for(DataBase d : ld){
+				if(d.getName().equals(initDb.getName())){
+					DataBase db = new MysqlInfomation(configT.get(initDb.getName())).getDb();
+					ld.set(i, db);
+					try {
+						DocumentDll.setKey(MD5Util.MD5(configT.get(initDb.getName()).getDbPath()), SerializeUtil.serializeObject(db));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					break;
+				}
+				i++;
+			}
+			return ld.toArray(new Object[ld.size()]);
 		}
-		
-		return ld.toArray(new Object[ld.size()]);
 	}
 
 	public Object getParent(Object child) {

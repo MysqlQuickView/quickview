@@ -5,6 +5,7 @@ import java.util.List;
 
 import lad.eclipse.action.EditorUtils;
 import lad.eclipse.model.Column;
+import lad.eclipse.model.DataBase;
 import lad.eclipse.model.iDBObj;
 import lad.eclipse.mysqlview.Activator;
 import lad.eclipse.mysqlview.preferences.MysqlPreferencePage;
@@ -34,6 +35,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
@@ -47,10 +49,14 @@ public class MysqlView extends ViewPart {
 	private Action refreshAction;
 	private Action settingAction;
 
+	public void refreshOne(DataBase db) throws PartInitException{
+		this.init(null);
+	}
+	
 	public void createPartControl(Composite parent) {
 		this.viewer = new CheckboxTreeViewer(parent, 770);
 		this.drillDownAdapter = new DrillDownAdapter(this.viewer);
-		this.viewer.setContentProvider(new MysqlContentProvider());
+		this.viewer.setContentProvider(new MysqlContentProvider(null));
 		this.viewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
 				new MysqlLabelProvider()));
 
@@ -61,6 +67,12 @@ public class MysqlView extends ViewPart {
 		hookDoubleClickAction();
 		hookCheckClickAction();
 		contributeToActionBars();
+	}
+	
+	public void viewContentInit(DataBase db) throws PartInitException{
+		MysqlContentProvider cp = new MysqlContentProvider(db);
+		this.viewer.setContentProvider(cp);
+		this.viewer.refresh();
 	}
 
 	private void hookContextMenu() {
@@ -229,7 +241,23 @@ public class MysqlView extends ViewPart {
 
 		this.refreshAction = new Action() {
 			public void run() {
-				MysqlView.this.viewer.refresh();
+				ISelection selection = MysqlView.this.viewer.getSelection();
+				Object obj = ((IStructuredSelection) selection)
+						.getFirstElement();
+				if(obj instanceof DataBase){
+					DataBase db = (DataBase) obj;
+					try {
+						MysqlView.this.viewContentInit(db);
+					} catch (PartInitException e) {
+						e.printStackTrace();
+					}
+				}else{
+					try {
+						MysqlView.this.viewContentInit(null);
+					} catch (PartInitException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		};
 		this.refreshAction.setText("refresh");

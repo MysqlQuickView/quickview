@@ -8,10 +8,32 @@ public class DBConfig {
 	private String host;
 	private String dbName;
 	private String dbPath;
+	private String dbType;
 
+	public String getDbType() {
+		return dbType;
+	}
+	
+	public String getDriverClassName() {
+		if(dbPath.indexOf("mysql")>=0 || dbType.equals("mysql")){
+			return "com.mysql.jdbc.Driver";
+		}
+		return null;
+	}
+
+	public void setDbType(String dbType) {
+		this.dbType = dbType;
+	}
+
+	public DBConfig(String dbPath) {
+		this.dbPath = dbPath;
+		this.init();
+	}
+	
 	public DBConfig(String dbPath, String password) {
 		this.dbPath = dbPath;
 		this.password = password;
+		this.init();
 	}
 
 	public DBConfig(String host, String dbName, String username, String password) {

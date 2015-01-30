@@ -113,13 +113,4 @@ public class Column implements iDBObj, Serializable {
 		}
 		return "Object";
 	}
-	
-	public String toString(){
-		return "{a:'"+this.getObjName()+"'}";
-	}
-	
-	public static void main(String[] args) {
-		
-		System.out.println("lad");
-	}
 }
