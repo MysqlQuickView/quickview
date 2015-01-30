@@ -3,6 +3,7 @@ package lad.eclipse.model;
 import java.io.Serializable;
 
 public class Column implements iDBObj, Serializable {
+	private static final long serialVersionUID = 1L;
 	public static int TYPE_INTEGER = 9;
 	public static int TYPE_FLOAT = 1;
 	public static int TYPE_DOUBLE = 2;

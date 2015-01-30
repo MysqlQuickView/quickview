@@ -68,6 +68,9 @@ public class MysqlContentProvider implements IStructuredContentProvider,
 			
 			return ld.toArray(new Object[ld.size()]);
 		}else{
+			if(ld == null){
+				ld = new ArrayList<DataBase>();
+			}
 			int i = 0;
 			for(DataBase d : ld){
 				if(d.getName().equals(initDb.getName())){

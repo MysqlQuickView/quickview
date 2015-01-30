@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Quickview
-Bundle-SymbolicName: quickview2;singleton:=true
+Bundle-Name: mysqlview
+Bundle-SymbolicName: lad.eclipse.mysqlview;singleton:=true
 Bundle-Version: 2.0.1.qualifier
 Bundle-ClassPath: .,
  lib/sqlitejdbc-v033-nested.jar,

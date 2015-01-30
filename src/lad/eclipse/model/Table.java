@@ -3,6 +3,7 @@ package lad.eclipse.model;
 import java.io.Serializable;
 
 public class Table implements iDBObj , Serializable{
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String comment;
 	private Column[] children;
