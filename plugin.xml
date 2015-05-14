@@ -33,7 +33,7 @@
       <page
             class="lad.eclipse.mysqlview.preferences.MysqlPreferencePage"
             id="lad.eclipse.mysqlview.preferences.mysqlPreferencePage"
-            name="mysql">
+            name="Mysql">
       </page>
       <page
             category="lad.eclipse.mysqlview.preferences.mysqlPreferencePage"
