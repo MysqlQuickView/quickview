@@ -55,13 +55,13 @@ public class MysqlContentProvider implements IStructuredContentProvider,
 					DBConfig dbc = new DBConfig(config);
 					configT.put(dbc.getDbName(), dbc);
 					
-					if(dbt == null){
+//					if(dbt == null){
 						DataBase db = new MysqlInfomation(dbc).getDb();
 						ld.add(db);
 						DocumentDll.setKey(MD5Util.MD5(config), SerializeUtil.serializeObject(db));
-					}else{
-						ld.add((DataBase) dbt);
-					}
+//					}else{
+//						ld.add((DataBase) dbt);
+//					}
 				} catch (Exception e) {
 				}
 			}
